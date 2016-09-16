@@ -480,11 +480,11 @@ def test_failure_junit_xml(test_name, message, stdout=None, class_name="Results"
     failure.set('message', message)
     failure.set('type', '')
     if stdout:
-        system_out = ET.SubElement(testsuite, 'system-out')
+        system_out = ET.SubElement(testcase, 'system-out')
         system_out.text = cdata(filter_nonprintable_text(stdout))
     return ET.tostring(testsuite, encoding='utf-8', method='xml')
 
-def test_success_junit_xml(test_name, class_name="Results", testcase_name="test_ran"):
+def test_success_junit_xml(test_name, stdout=None, class_name="Results", testcase_name="test_ran"):
     """
     Generate JUnit XML file for a unary test suite where the test succeeded.
     
@@ -502,6 +502,9 @@ def test_success_junit_xml(test_name, class_name="Results", testcase_name="test_
     testcase.set('status', 'run')
     testcase.set('time', '1')
     testcase.set('classname', class_name)
+    if stdout:
+        system_out = ET.SubElement(testcase, 'system-out')
+        system_out.text = cdata(filter_nonprintable_text(stdout))
     return ET.tostring(testsuite, encoding='utf-8', method='xml')
 
 def print_summary(junit_results, runner_name='ROSUNIT'):
